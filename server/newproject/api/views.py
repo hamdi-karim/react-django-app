@@ -7,5 +7,5 @@ from .serializer import BookSerializer
 @api_view(['GET'])
 def get_books(request):
     booksData = Book.objects.all()
-    serializedData = BookSerializer(booksData, many=True)
+    serializedData = BookSerializer(booksData, many=True).data
     return Response(serializedData)
