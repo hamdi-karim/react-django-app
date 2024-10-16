@@ -1,0 +1,11 @@
+{
+  "folders": [
+    {
+      "path": "."
+    }
+  ],
+  "settings": {
+    "python.terminal.activateEnvInCurrentTerminal": true,
+    "python.defaultInterpreterPath": "/Users/karimhamdi/djangoreactcrudenv/bin/python3"
+  }
+}
