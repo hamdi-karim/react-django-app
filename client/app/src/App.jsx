@@ -4,6 +4,12 @@ import { useEffect, useState } from "react";
 
 function App() {
   const [books, setBooks] = useState([]);
+  const [title, setTitle] = useState("");
+  const [releaseYear, setReleaseYear] = useState(0);
+
+  useEffect(() => {
+    fetchBooks();
+  }, []);
 
   const fetchBooks = async () => {
     try {
@@ -11,23 +17,49 @@ function App() {
       const data = await response.json();
 
       setBooks(data);
-    } catch (err) {
-      console.log(err);
+    } catch (error) {
+      console.log(error);
     }
   };
 
-  useEffect(() => {
-    fetchBooks();
-  }, []);
+  const addBook = async () => {
+    const bookData = {
+      title,
+      release_year: releaseYear,
+    };
+
+    try {
+      const response = await fetch("http://127.0.0.1:8000/api/books/create/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(bookData),
+      });
+
+      const data = await response.json();
+      setBooks((prev) => [...prev, data]);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <>
       <h1> Book Storm </h1>
 
       <div>
-        <input type="text" placeholder="Title" />
-        <input type="number" placeholder="Release date" />
-        <button>Add Book</button>
+        <input
+          type="text"
+          placeholder="Title"
+          onChange={(event) => setTitle(event.target.value)}
+        />
+        <input
+          type="number"
+          placeholder="Release date"
+          onChange={(event) => setReleaseYear(event.target.value)}
+        />
+        <button onClick={addBook}>Add Book</button>
 
         <h1>Books List</h1>
         {books.map((book) => (
