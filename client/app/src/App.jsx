@@ -66,6 +66,8 @@ function App() {
           <div key={book.id}>
             <p>Title: {book.title} </p>
             <p>Release Year: {book.release_year}</p>
+            <input type="text" placeholder="New Title..." />
+            <button>Change Title</button>
           </div>
         ))}
       </div>
