@@ -7,6 +7,8 @@ function App() {
   const [title, setTitle] = useState("");
   const [releaseYear, setReleaseYear] = useState(0);
 
+  const [newTitle, setNewTitle] = useState("");
+
   useEffect(() => {
     fetchBooks();
   }, []);
@@ -44,6 +46,28 @@ function App() {
     }
   };
 
+  const updateTitle = async (pk, release_year) => {
+    const bookData = {
+      title: newTitle,
+      release_year,
+    };
+
+    try {
+      const response = await fetch(`http://127.0.0.1:8000/api/books/${pk}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(bookData),
+      });
+
+      const data = await response.json();
+      setBooks((prev) => prev.map((book) => (book.id === pk ? data : book)));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <>
       <h1> Book Storm </h1>
@@ -66,8 +90,14 @@ function App() {
           <div key={book.id}>
             <p>Title: {book.title} </p>
             <p>Release Year: {book.release_year}</p>
-            <input type="text" placeholder="New Title..." />
-            <button>Change Title</button>
+            <input
+              type="text"
+              placeholder="New Title..."
+              onChange={(event) => setNewTitle(event.target.value)}
+            />
+            <button onClick={() => updateTitle(book.id, book.release_year)}>
+              Change Title
+            </button>
           </div>
         ))}
       </div>
