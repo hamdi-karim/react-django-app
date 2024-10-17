@@ -68,6 +68,17 @@ function App() {
     }
   };
 
+  const deleteBook = async (pk) => {
+    try {
+      await fetch(`http://127.0.0.1:8000/api/books/${pk}`, {
+        method: "DELETE",
+      });
+      setBooks((prev) => prev.filter((book) => book.id !== pk));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <>
       <h1> Book Storm </h1>
@@ -98,6 +109,7 @@ function App() {
             <button onClick={() => updateTitle(book.id, book.release_year)}>
               Change Title
             </button>
+            <button onClick={() => deleteBook(book.id)}>Delete</button>
           </div>
         ))}
       </div>
